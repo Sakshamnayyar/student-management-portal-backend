@@ -2,8 +2,8 @@ package com.saksham.portal.submissions.model;
 
 import java.time.LocalDateTime;
 
-import com.saksham.portal.common.eums.SubmissionStatus;
-import com.saksham.portal.common.eums.SubmissionType;
+import com.saksham.portal.common.enums.SubmissionStatus;
+import com.saksham.portal.common.enums.SubmissionType;
 import com.saksham.portal.users.model.User;
 
 import jakarta.persistence.Column;

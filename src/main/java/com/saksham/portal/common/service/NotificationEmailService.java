@@ -1,6 +1,6 @@
 package com.saksham.portal.common.service;
 
-import com.saksham.portal.common.eums.EmailType;
+import com.saksham.portal.common.enums.EmailType;
 import com.saksham.portal.common.util.EmailTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

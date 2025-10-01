@@ -44,21 +44,11 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateuser(
+    public ResponseEntity<UserResponse> updateuser(
             @PathVariable Long id, 
             @RequestBody UpdateUserRequest request) {
         
-        try {
-            // Debug: Log the incoming request
-            System.out.println("Update request for user ID: " + id);
-            System.out.println("Request body: " + request);
-            
-            UserResponse updatedUser = userService.updateUser(id, request);
-            return ResponseEntity.ok(updatedUser);
-        } catch (Exception e) {
-            e.printStackTrace(); // Debug: Print full stack trace
-            return ResponseEntity.badRequest().body("Update failed: " + e.getMessage());
-        }
+        return ResponseEntity.ok(userService.updateUser(id, request));
     }
     
 

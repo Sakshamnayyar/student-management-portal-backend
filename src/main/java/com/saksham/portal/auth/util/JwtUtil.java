@@ -19,18 +19,9 @@ public class JwtUtil {
         return new SecretKeySpec(SECRET.getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 
-    public String generateToken(String username) {
+    public String generateToken(Long userId, String role) {
         return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
-
-    public String generateToken(String username, String role) {
-        return Jwts.builder()
-                .setSubject(username)
+                .setSubject(userId.toString())
                 .claim("role", role) // Add role as a claim
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
@@ -38,13 +29,13 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String extractUsername(String token) {
-        return Jwts.parserBuilder()
+    public Long extractUserId(String token) {
+        return Long.valueOf(Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject();
+                .getSubject());
     }
     public String extractRole(String token) {
         return Jwts.parserBuilder()
@@ -69,10 +60,10 @@ public class JwtUtil {
         }
     }
 
-    public boolean isTokenValid(String token, String username) {
+    public boolean isTokenValid(String token, Long userId) {
         try {
-            String extractedUsername = extractUsername(token);
-            return extractedUsername.equals(username) && !isTokenExpired(token);
+            Long extractedUserId = extractUserId(token);
+            return extractedUserId.equals(userId) && !isTokenExpired(token);
         } catch (Exception e) {
             return false; // Invalid token format or signature
         }

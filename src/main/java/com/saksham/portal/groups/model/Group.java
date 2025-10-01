@@ -3,6 +3,8 @@ package com.saksham.portal.groups.model;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.saksham.portal.users.model.User;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,8 +36,8 @@ public class Group {
 
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy="group", cascade=CascadeType.ALL, orphanRemoval=true)
-    private Set<GroupUser> groupUsers;
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    private Set<User> users;
 
     @PrePersist
     void onCreate() {

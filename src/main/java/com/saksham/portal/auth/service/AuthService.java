@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import com.saksham.portal.auth.dto.LoginRequest;
 import com.saksham.portal.auth.dto.RegisterRequest;
 import com.saksham.portal.auth.util.JwtUtil;
-import com.saksham.portal.common.eums.Role;
-import com.saksham.portal.common.eums.UserStatus;
+import com.saksham.portal.common.enums.Role;
+import com.saksham.portal.common.enums.UserStatus;
 import com.saksham.portal.users.model.User;
 import com.saksham.portal.users.repository.UserRepository;
 
@@ -41,7 +41,6 @@ public class AuthService {
         if(!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
-        // ✅ Include role in JWT token
-        return jwtUtil.generateToken(user.getUsername(), user.getRole().name());
+        return jwtUtil.generateToken(user.getId(), user.getRole().name());
     }
 }

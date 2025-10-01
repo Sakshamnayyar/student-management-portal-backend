@@ -1,7 +1,7 @@
 package com.saksham.portal.users.dto;
 
-import com.saksham.portal.common.eums.Role;
-import com.saksham.portal.common.eums.UserStatus;
+import com.saksham.portal.common.enums.Role;
+import com.saksham.portal.common.enums.UserStatus;
 
 public record UpdateUserRequest(
     String username,

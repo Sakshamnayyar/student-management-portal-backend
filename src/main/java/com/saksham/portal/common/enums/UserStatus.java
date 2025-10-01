@@ -1,4 +1,4 @@
-package com.saksham.portal.common.eums;
+package com.saksham.portal.common.enums;
 
 public enum UserStatus {
     ONBOARDING,

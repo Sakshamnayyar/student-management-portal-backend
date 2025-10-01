@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.saksham.portal.common.eums.Role;
+import com.saksham.portal.common.enums.Role;
 import com.saksham.portal.users.model.User;
 
 

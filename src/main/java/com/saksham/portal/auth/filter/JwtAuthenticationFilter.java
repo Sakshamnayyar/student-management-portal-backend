@@ -51,11 +51,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 2. Extract JWT token (remove "Bearer " prefix)
         String jwt = authHeader.substring(7);
-        String username;
+        Long userId;
 
         try {
             // 3. Extract username from token
-            username = jwtUtil.extractUsername(jwt);
+            userId = jwtUtil.extractUserId(jwt);
         } catch (Exception e) {
             // Invalid token format
             filterChain.doFilter(request, response);
@@ -63,14 +63,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         // 4. If username exists and no authentication is set
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             
             try {
                 // 5. Extract role from token
                 String role = jwtUtil.extractRole(jwt);
                 
                 // 6. Validate token
-                if (jwtUtil.isTokenValid(jwt, username)) {
+                if (jwtUtil.isTokenValid(jwt, userId)) {
                     
                     // 7. Create authorities from role
                     List<SimpleGrantedAuthority> authorities = List.of(
@@ -80,7 +80,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     // 8. Create authentication token with authorities
                     UsernamePasswordAuthenticationToken authToken = 
                         new UsernamePasswordAuthenticationToken(
-                            username,
+                            userId,
                             null, // No credentials needed for JWT
                             authorities // Use authorities from token
                         );

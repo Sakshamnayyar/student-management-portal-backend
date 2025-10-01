@@ -2,8 +2,9 @@ package com.saksham.portal.users.model;
 
 import java.time.LocalDateTime;
 
-import com.saksham.portal.common.eums.Role;
-import com.saksham.portal.common.eums.UserStatus;
+import com.saksham.portal.common.enums.Role;
+import com.saksham.portal.common.enums.UserStatus;
+import com.saksham.portal.groups.model.Group;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +13,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -47,6 +50,10 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
