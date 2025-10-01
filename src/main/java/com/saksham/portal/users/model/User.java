@@ -21,12 +21,14 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
 //lombok annotations to reduce boilerplate code
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -34,6 +36,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private long id;
 
     @Column(nullable=false, unique=true)

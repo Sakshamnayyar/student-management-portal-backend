@@ -44,10 +44,24 @@ public class MessageService {
         msg.setContent(request.content());
         msg.setTimestamp(LocalDateTime.now());
 
-        if(request.receiverId() != null) {
-            User receiver = userRepo.findById(request.receiverId())
-                        .orElseThrow(()-> new RuntimeException("Receiver not found"));
-            msg.setReceiver(receiver);
+        // Handle receiver ID based on sender role
+        if(request.groupId() == null) { // This is onboarding chat (one-on-one)
+            if(sender.getRole() == Role.USER) {
+                // For regular users, automatically set receiver to admin
+                User admin = userRepo.findByRole(Role.ADMIN)
+                        .stream()
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("Admin not found"));
+                msg.setReceiver(admin);
+            } else if(sender.getRole() == Role.ADMIN) {
+                // For admin, receiver ID must be provided
+                if(request.receiverId() == null) {
+                    throw new RuntimeException("Admin must specify receiver ID when sending messages");
+                }
+                User receiver = userRepo.findById(request.receiverId())
+                            .orElseThrow(()-> new RuntimeException("Receiver not found"));
+                msg.setReceiver(receiver);
+            }
         }
         
         if(request.groupId() != null) {
