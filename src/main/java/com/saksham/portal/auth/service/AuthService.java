@@ -1,0 +1,47 @@
+package com.saksham.portal.auth.service;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.saksham.portal.auth.dto.LoginRequest;
+import com.saksham.portal.auth.dto.RegisterRequest;
+import com.saksham.portal.auth.util.JwtUtil;
+import com.saksham.portal.common.eums.Role;
+import com.saksham.portal.common.eums.UserStatus;
+import com.saksham.portal.users.model.User;
+import com.saksham.portal.users.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class AuthService {
+    private final UserRepository userRepo;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+
+    public void register(RegisterRequest req) {
+        if(userRepo.findByUsername(req.getUsername()).isPresent()){
+            throw new RuntimeException("Username already exists");
+        }
+
+        User user = User.builder()
+                .username(req.getUsername())
+                .email(req.getEmail())
+                .password(passwordEncoder.encode(req.getPassword()))
+                .role(Role.USER)
+                .status(UserStatus.ONBOARDING)
+                .build();
+        userRepo.save(user);
+    }
+
+    public String login(LoginRequest req) {
+        User user = userRepo.findByUsername(req.getUsername())
+                .orElseThrow(() -> new RuntimeException("User Not found"));
+        if(!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+        // ✅ Include role in JWT token
+        return jwtUtil.generateToken(user.getUsername(), user.getRole().name());
+    }
+}
