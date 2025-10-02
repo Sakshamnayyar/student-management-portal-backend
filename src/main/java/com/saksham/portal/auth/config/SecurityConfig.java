@@ -1,4 +1,4 @@
-package com.saksham.portal.common.config;
+package com.saksham.portal.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

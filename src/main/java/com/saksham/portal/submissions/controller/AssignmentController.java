@@ -104,8 +104,6 @@ public class AssignmentController {
             String token = authHeader.substring(7);
             Long userId = jwtUtil.extractUserId(token);
             
-            // Get user's group and fetch assignments for that group
-            // This will be handled by the service layer
             List<AssignmentResponse> assignments = assignmentService.getAssignmentsByUserGroup(userId);
             return ResponseEntity.ok(assignments);
         } catch (Exception e) {
