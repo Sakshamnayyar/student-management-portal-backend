@@ -18,7 +18,7 @@ import com.saksham.portal.users.service.UserService;
 
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/users")
 @PreAuthorize("hasRole('ADMIN')")
 public class UserController {
 

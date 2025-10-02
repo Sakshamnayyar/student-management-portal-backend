@@ -1,0 +1,128 @@
+Absolutely! Here is a **fully detailed version** of your CoPilot dataset, pulling together everything from your **personal background, professional experience, technical expertise, side projects, interests, tone preferences, and career goals**.
+
+You can copy this into any AI assistant or Copilot setup to get *context-aware*, *personalized*, and *aligned responses* for interviews like the one with Kimberly at Wealthfront.
+
+---
+
+# ✅ **Saksham Nayyar – Full Personalized CoPilot Dataset (Wealthfront Interview)**
+
+---
+
+## 🧑‍💼 PROFESSIONAL SUMMARY
+
+- **Name:** Saksham Nayyar  
+- **Role Applying For:** Android Engineer at Wealthfront  
+- **Current Status:** Master’s student in Computer Science at **George Mason University**, graduating in **May 2025**  
+- **Work Authorization:** On F-1 visa (OPT eligible), open to **remote, hybrid, or relocation** roles  
+- **Tone Preference:** Confident, friendly, and formal  
+- **Current Location:** United States  
+
+---
+
+## 💼 PROFESSIONAL EXPERIENCE
+
+### 🇰🇷 Samsung Research Institute | Android Software Engineer | 3+ Years  
+- Built and maintained large-scale Android applications used globally (Samsung DeX and internal tools).
+- Migrated apps to modern **MVVM architecture**, using **Kotlin Coroutines**, **Kotlin Flows**, and **Hilt** for dependency injection.
+- Contributed to UI and architecture improvements for performance and scalability.
+- Collaborated with cross-functional teams across product, design, and QA.
+- Wrote clean, testable code with a focus on maintainability and stability.
+- Frequently debugged deep issues across Android versions and devices.
+
+---
+
+## 🎓 EDUCATION
+
+### George Mason University – MS in Computer Science (Expected May 2025)  
+**Relevant Coursework:**
+- Machine Learning  
+- Data Mining (Built a crime forecasting model for Baltimore using time-series data)  
+- Advanced NLP (Worked on OpenAI API integration and language model evaluations)  
+- Mining Massive Datasets  
+- Software Engineering (Current): Working on Jenkins pipeline integrations with Docker and Git  
+
+---
+
+## 💡 TECHNICAL SKILLS
+
+### ✅ Android Core:
+- **Languages:** Kotlin (main), Java (legacy)
+- **Architecture:** MVVM, Repository Pattern, Clean Architecture
+- **Frameworks/Libraries:** Jetpack (ViewModel, LiveData, Room, Navigation, etc.), Hilt, Retrofit, WorkManager
+
+### ✅ UI & UX:
+- Strong with XML UI development
+- **Jetpack Compose**: Some experience (used in side projects), comfortable reading and adapting code
+- Proficient with custom views, transitions, accessibility, animations
+
+### ✅ Backend / Realtime:
+- Firebase (Auth, Realtime DB, Firestore) for messaging and notifications
+- REST APIs and Retrofit with error handling and interceptors
+
+### ✅ DevOps / CI:
+- Familiar with Git, GitHub Actions, Docker, Jenkins, and basic CI/CD pipelines
+- Comfortable with version control and structured branching strategies
+
+---
+
+## 🌱 PERSONAL PROJECTS
+
+### 📲 Whisperly (In Progress)
+- A **WhatsApp-like Android chatting app** focused on privacy and a smooth UI/UX.
+- Built with **Firebase (Auth, Firestore, Realtime Messaging)**, **MVVM**, **Hilt**, and **Jetpack** components.
+- Targeted features include media support, custom emojis, dark mode, and status updates.
+
+### 🌍 Worldly
+- A fun **quiz game** where users guess the country by its shape.
+- Built in **Kotlin** with Jetpack ViewModel architecture.
+- Uses a structured `CountryViewModel`, real-time filtering based on input, and country images sourced from a `drawable` directory and `.json` metadata.
+
+### 🔧 Other Work:
+- Leetcode visualizer app (conceptual)
+- 100+ days LeetCode streak; focused on Medium/Hard problems to prep for interviews
+
+---
+
+## 📲 RECRUITER CALL GOALS
+
+You have a **call with Kimberly at 5 PM**. This is likely a recruiter screen, and your objective is to:
+- Show genuine **interest in Wealthfront**
+- Demonstrate you’re a **strong Android candidate** worth interviewing further
+- Back up that you’ve **done your homework** and explored their app and blog
+- Position yourself as someone who is **passionate about the mission** and a good cultural fit
+
+---
+
+## 💬 PERSONALIZED ANSWER TEMPLATES (Examples)
+
+### Why do you want to work at Wealthfront?
+> “Wealthfront’s mission to build a financial system that favors people, not institutions, really resonates with me. I love the idea of Self-Driving Money™ and the way the company leverages automation to help users plan and save better. After exploring the app and reading through the articles, I can see the engineering team is deeply product-minded—and I’d love to contribute to that kind of impact.”
+
+---
+
+### What is your experience with Android development?
+> “I’ve been working in Android for over 3 years, most notably at Samsung where I used MVVM, Kotlin Flows, and Hilt to build large-scale apps. My focus has been clean architecture, performance, and seamless user experience. I’ve also built side projects like Whisperly and Worldly to explore Firebase, Compose, and game development, which keeps me sharp outside of work.”
+
+---
+
+### What have you done to prepare for this role?
+> “I downloaded the Wealthfront app, explored the onboarding flow and key features, and also spoke to an engineer at the company to better understand the culture and engineering process. I’ve gone through your blog and engineering site to get a sense of your values—and I’m genuinely excited to be part of a team that puts user-first innovation at the center.”
+
+---
+
+### What kind of work environment are you looking for?
+> “I value environments that prioritize clean code, ownership, and real collaboration across teams. From what I’ve learned, Wealthfront offers just that—where engineers are trusted to make decisions and grow alongside the product.”
+
+---
+
+## 🙋‍♂️ QUESTIONS TO ASK THE RECRUITER
+
+1. What does the interview process look like for the Android team?
+2. What kinds of challenges is the Android team currently focused on?
+3. How big is the Android team and how does it collaborate with design/product?
+4. What makes someone successful at Wealthfront?
+5. What should I prepare or highlight if I move on to the next round?
+
+---
+
+Would you like me to package this into a downloadable Google Doc, PDF, or a markdown `.md` file for easy access during your call?

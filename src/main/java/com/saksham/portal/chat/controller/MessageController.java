@@ -18,7 +18,7 @@ import com.saksham.portal.chat.dto.MessageResponse;
 import com.saksham.portal.chat.service.MessageService;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("api/chat")
 public class MessageController {
 
     private final MessageService messageService;
