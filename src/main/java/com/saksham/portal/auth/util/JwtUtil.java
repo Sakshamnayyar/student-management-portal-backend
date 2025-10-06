@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
@@ -12,8 +13,12 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtUtil {
-    private final String SECRET = "secretKey1234567890abcdefghijklmnopqrstuvwxyz"; //for demo only - must be at least 256 bits
-    private final long EXPIRATION = 86400000; //1 day
+    
+    @Value("${jwt.secret}")
+    private String SECRET;
+    
+    @Value("${jwt.expiration}")
+    private long EXPIRATION;
 
     private Key getSigningKey() {
         return new SecretKeySpec(SECRET.getBytes(), SignatureAlgorithm.HS256.getJcaName());
