@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.saksham.portal.common.enums.Role;
+import com.saksham.portal.users.dto.BasicUserInfoResponse;
 import com.saksham.portal.users.dto.UpdateUserRequest;
 import com.saksham.portal.users.dto.UserResponse;
 import com.saksham.portal.users.model.User;
@@ -33,6 +34,12 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
+    public BasicUserInfoResponse getBasicUserInfo(Long id) {
+        return userRepo.findById(id)
+                .map(this::toBasicDto)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
     @Transactional
     public UserResponse updateUser(Long id, UpdateUserRequest request) {
         User user = userRepo.findById(id).orElseThrow(()-> new RuntimeException("User Not Found"));
@@ -55,6 +62,14 @@ public class UserService {
             user.getStatus(),
             user.getCreatedAt(),
             user.getUpdatedAt()
+        );
+    }
+
+    private BasicUserInfoResponse toBasicDto(User user) {
+        return new BasicUserInfoResponse(
+            user.getId(),
+            user.getUsername(),
+            user.getEmail()
         );
     }
 

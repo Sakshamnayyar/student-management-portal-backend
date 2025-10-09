@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.saksham.portal.common.enums.SubmissionStatus;
 import com.saksham.portal.submissions.config.FileUploadProperties;
+import com.saksham.portal.submissions.dto.SubmissionEvaluationRequest;
 import com.saksham.portal.submissions.dto.SubmissionResponse;
 import com.saksham.portal.submissions.model.Assignment;
 import com.saksham.portal.submissions.model.Submission;
@@ -50,29 +51,23 @@ public class SubmissionService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Validate assignment exists
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new RuntimeException("Assignment not found"));
 
-        // Check if user already submitted for this assignment
         if (submissionRepository.existsByAssignmentIdAndUserId(assignmentId, userId)) {
             throw new RuntimeException("You have already submitted for this assignment");
         }
 
-        // Validate file
         validateFile(file);
 
-        // Check if assignment is past due
         SubmissionStatus status = SubmissionStatus.PENDING;
         if (assignment.getDueDate() != null && LocalDateTime.now().isAfter(assignment.getDueDate())) {
-            // Note: Using existing enum, in future could add LATE status
-            status = SubmissionStatus.PENDING; // Keep as pending for now
+            // Note: add LATE status
+            status = SubmissionStatus.PENDING; 
         }
 
-        // Save file
         String fileName = saveFile(file, assignmentId, userId);
 
-        // Create submission
         Submission submission = Submission.builder()
                 .assignment(assignment)
                 .user(user)
@@ -109,6 +104,19 @@ public class SubmissionService {
         return toResponse(submission);
     }
 
+    @Transactional
+    public SubmissionResponse updateSubmissionEvaluation(Long submissionId, SubmissionEvaluationRequest request) {
+        Submission submission = submissionRepository.findById(submissionId)
+                .orElseThrow(() -> new RuntimeException("Submission not found"));
+
+        submission.setStatus(request.status());
+        submission.setGrade(request.grade());
+        submission.setFeedback(request.feedback());
+
+        Submission updated = submissionRepository.save(submission);
+        return toResponse(updated);
+    }
+
     @Transactional(readOnly = true)
     public String getFilePath(Long submissionId) {
         Submission submission = submissionRepository.findById(submissionId)
@@ -143,14 +151,13 @@ public class SubmissionService {
             String fileExtension = getFileExtension(originalFilename);
             String uniqueFileName = UUID.randomUUID().toString() + "." + fileExtension;
             
-            // Create directory structure: uploads/assignments/{assignmentId}/{userId}/
+            // Create directory: uploads/assignments/{assignmentId}/{userId}/
             Path assignmentDir = Paths.get(fileUploadProperties.getUploadDir(), "assignments", assignmentId.toString(), userId.toString());
             Files.createDirectories(assignmentDir);
             
             Path filePath = assignmentDir.resolve(uniqueFileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
             
-            // Return relative path for storage
             return Paths.get("assignments", assignmentId.toString(), userId.toString(), uniqueFileName).toString();
             
         } catch (IOException e) {

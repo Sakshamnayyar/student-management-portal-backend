@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.saksham.portal.auth.dto.AuthResponse;
 import com.saksham.portal.auth.dto.LoginRequest;
 import com.saksham.portal.auth.dto.RegisterRequest;
 import com.saksham.portal.auth.service.AuthService;
@@ -42,8 +41,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
-            String token = authService.login(request);
-            return ResponseEntity.ok(new AuthResponse(token));
+            var authResponse = authService.login(request);
+            return ResponseEntity.ok(authResponse);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Login failed: " + e.getMessage());
         }

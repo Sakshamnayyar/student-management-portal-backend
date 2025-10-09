@@ -3,6 +3,7 @@ package com.saksham.portal.auth.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.saksham.portal.auth.dto.AuthResponse;
 import com.saksham.portal.auth.dto.LoginRequest;
 import com.saksham.portal.auth.dto.RegisterRequest;
 import com.saksham.portal.auth.util.JwtUtil;
@@ -35,12 +36,13 @@ public class AuthService {
         userRepo.save(user);
     }
 
-    public String login(LoginRequest req) {
+    public AuthResponse login(LoginRequest req) {
         User user = userRepo.findByUsername(req.getUsername())
                 .orElseThrow(() -> new RuntimeException("User Not found"));
         if(!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
-        return jwtUtil.generateToken(user.getId(), user.getRole().name());
+        String token = jwtUtil.generateToken(user.getId(), user.getRole().name());
+        return new AuthResponse(token, user);
     }
 }
