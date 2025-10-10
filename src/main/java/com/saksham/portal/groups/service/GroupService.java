@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.saksham.portal.common.enums.Role;
+import com.saksham.portal.common.service.NotificationEmailService;
 import com.saksham.portal.groups.dto.CreateGroupRequest;
 import com.saksham.portal.groups.dto.GroupResponse;
 import com.saksham.portal.groups.model.Group;
@@ -17,10 +19,12 @@ import com.saksham.portal.users.repository.UserRepository;
 public class GroupService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
+    private final NotificationEmailService notificationEmailService;
 
-    public GroupService(GroupRepository groupRepository, UserRepository userRepository) {
+    public GroupService(GroupRepository groupRepository, UserRepository userRepository, NotificationEmailService notificationEmailService) {
         this.groupRepository = groupRepository;
         this.userRepository = userRepository;
+        this.notificationEmailService = notificationEmailService;
     }
 
     @Transactional
@@ -35,13 +39,37 @@ public class GroupService {
         group.setDescription(request.description());
         Group savedGroup = groupRepository.save(group);
 
+        // Get admin who created the group
+        User admin = userRepository.findByRole(Role.ADMIN)
+                .stream()
+                .findFirst()
+                .orElse(null);
+        String createdBy = admin != null ? admin.getUsername() : "System Administrator";
+
         if (request.userIds() != null && !request.userIds().isEmpty()) {
             List<User> users = userRepository.findAllById(request.userIds());
             for (User user : users) {
                 savedGroup.addUser(user);
+                
+                // Send group assignment notification to each user
+                notificationEmailService.sendGroupAssignmentNotification(
+                    user.getEmail(),
+                    group.getName(),
+                    createdBy
+                );
             }
             userRepository.saveAll(users);
             savedGroup = groupRepository.save(savedGroup);
+        }
+
+        // Send group creation notification to all admins
+        List<User> admins = userRepository.findByRole(Role.ADMIN);
+        for (User adminUser : admins) {
+            notificationEmailService.sendGroupCreatedNotification(
+                adminUser.getEmail(),
+                group.getName(),
+                createdBy
+            );
         }
 
         return GroupResponse.fromEntity(savedGroup);
@@ -69,6 +97,20 @@ public class GroupService {
         
         userRepository.save(user);
         Group savedGroup = groupRepository.save(group);
+
+        // Get admin who assigned the user
+        User admin = userRepository.findByRole(Role.ADMIN)
+                .stream()
+                .findFirst()
+                .orElse(null);
+        String assignedBy = admin != null ? admin.getUsername() : "System Administrator";
+
+        // Send group assignment notification to the user
+        notificationEmailService.sendGroupAssignmentNotification(
+            user.getEmail(),
+            group.getName(),
+            assignedBy
+        );
 
         return GroupResponse.fromEntity(savedGroup);
     }
@@ -146,6 +188,13 @@ public class GroupService {
         group.setName(request.name());
         group.setDescription(request.description());
         
+        // Get admin who updated the group (assume current admin user for notification purposes)
+        User admin = userRepository.findByRole(Role.ADMIN)
+                .stream()
+                .findFirst()
+                .orElse(null);
+        String updatedBy = admin != null ? admin.getUsername() : "System Administrator";
+        
         // Handle user assignments if provided
         if (request.userIds() != null) {
             // Remove all current users from the group
@@ -162,6 +211,13 @@ public class GroupService {
                 List<User> newUsers = userRepository.findAllById(request.userIds());
                 for (User user : newUsers) {
                     group.addUser(user);
+                    
+                    // Send group assignment notification to each newly assigned user
+                    notificationEmailService.sendGroupAssignmentNotification(
+                        user.getEmail(),
+                        group.getName(),
+                        updatedBy
+                    );
                 }
                 userRepository.saveAll(newUsers);
             }

@@ -52,6 +52,7 @@ public class User {
     private Role role;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 20)
     private UserStatus status;
 
     @ManyToOne

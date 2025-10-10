@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.saksham.portal.common.enums.Role;
 import com.saksham.portal.common.enums.SubmissionStatus;
+import com.saksham.portal.common.service.NotificationEmailService;
 import com.saksham.portal.submissions.config.FileUploadProperties;
 import com.saksham.portal.submissions.dto.SubmissionEvaluationRequest;
 import com.saksham.portal.submissions.dto.SubmissionResponse;
@@ -35,6 +37,7 @@ public class SubmissionService {
     private final AssignmentRepository assignmentRepository;
     private final UserRepository userRepository;
     private final FileUploadProperties fileUploadProperties;
+    private final NotificationEmailService notificationEmailService;
 
     @PostConstruct
     public void init() {
@@ -78,6 +81,17 @@ public class SubmissionService {
                 .build();
 
         Submission saved = submissionRepository.save(submission);
+        
+        // Send email notification to all admins about new submission
+        List<User> admins = userRepository.findByRole(Role.ADMIN);
+        for (User admin : admins) {
+            notificationEmailService.sendSubmissionNotification(
+                admin.getEmail(),
+                assignment.getTitle(),
+                user.getUsername()
+            );
+        }
+        
         return toResponse(saved);
     }
 
@@ -108,7 +122,6 @@ public class SubmissionService {
     public SubmissionResponse updateSubmissionEvaluation(Long submissionId, SubmissionEvaluationRequest request) {
         Submission submission = submissionRepository.findById(submissionId)
                 .orElseThrow(() -> new RuntimeException("Submission not found"));
-
         submission.setStatus(request.status());
         submission.setGrade(request.grade());
         submission.setFeedback(request.feedback());
